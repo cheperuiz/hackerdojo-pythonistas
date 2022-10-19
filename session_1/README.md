@@ -101,6 +101,11 @@ In python, as function is created by the keyword `def`. This tells the interpret
 The `async` keyword makes our function special allowing us to write **concurrent code** using `async/await` syntax, very similar to what other languages like Javascript provide. The `async` keyword transforms our function into a [coroutine](https://docs.python.org/3/library/asyncio-task.html) that returns a future (`awaitable`). 
 IJf you read the [official documentation about `asyncio`](https://docs.python.org/3/library/asyncio.html) you will see that we need other stuff to make asyncronous code work in python, but fortunately in our case all of this complexity is gracefully handled by FastAPI (and its dependencies).
 
+The final line exits our function and returns a `string` with the value of `"Hello, world!"` to the caller:
+```
+return "Hello, world!"
+``` 
+
 Finally, we have a line like this on top of our function:
 ```
 @app.get("/")
