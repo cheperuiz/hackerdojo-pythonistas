@@ -10,7 +10,7 @@ app = FastAPI()
 
 ie = Core()
 model = ie.read_model(model="model/v3-small_224_1.0_float.xml")
-compiled_model = ie.compile_model(model=model, device_name="MYRIAD")
+compiled_model = ie.compile_model(model=model, device_name="CPU")
 
 output_layer = compiled_model.output(0)
 
@@ -44,9 +44,7 @@ def infer_on(input_image):
 
 
 @app.get("/")
-async def root():
-    original = await download_image(
-        "https://www.thesprucepets.com/thmb/bFYTnEGrEtOXpG5PWj9vKXhzGhI=/3864x2576/filters:fill(auto,1)/GettyImages-491785001-0b67be9de07442b980ad682ac934c573.jpg"
-    )
+async def root(url: str):
+    original = await download_image(url)
     input_image = preprocess_image(original)
     return infer_on(input_image)
