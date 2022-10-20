@@ -10,7 +10,7 @@ If you want to take a look at the result, please follow the steps below:
 ## Prerequisites
 
 You should have a python-friendly setup already installed and configured in your system. For simplicity, I recommend VS Code.
-If this is your first time developing with python, follow the steps below:
+If this is your first time developing with Python and you don't have an IDE already configured, follow the steps below:
 
 - Install `Python 3.8+` in your system (I recommend the latest stable version, `Python 3.10`). If you are not sure how to do this, follow the steps at the [Official Documentation](https://wiki.python.org/moin/BeginnersGuide/Download).
 
@@ -96,10 +96,10 @@ We will start by the line in the middle:
 ```
 async def say_hello():
 ```
-In python, as function is created by the keyword `def`. This tells the interpreter that we are aboout to define a function. It has a very simple syntax, its just the `def` keyword, a `name` for the function (`sat_hello`), and the arguments the funcion needs to execute its code. In this case we don't really need any arguments, so its just empty brackets `()`.
+In python, as function is created by the keyword `def`. This tells the interpreter that we are about to define a function. It has a very simple syntax, its just the `def` keyword, a `name` for the function (`sat_hello`), and the arguments the funcion needs to execute its code. In this case we don't really need any arguments, so its just empty brackets `()`.
 
 The `async` keyword makes our function special allowing us to write **concurrent code** using `async/await` syntax, very similar to what other languages like Javascript provide. The `async` keyword transforms our function into a [coroutine](https://docs.python.org/3/library/asyncio-task.html) that returns a future (`awaitable`). 
-IJf you read the [official documentation about `asyncio`](https://docs.python.org/3/library/asyncio.html) you will see that we need other stuff to make asyncronous code work in python, but fortunately in our case all of this complexity is gracefully handled by FastAPI (and its dependencies).
+If you read the [official documentation about `asyncio`](https://docs.python.org/3/library/asyncio.html) you will see that we need other stuff to make asyncronous code work in python, but fortunately in our case all of this complexity is gracefully handled by FastAPI (and its dependencies).
 
 The final line exits our function and returns a `string` with the value of `"Hello, world!"` to the caller:
 ```
