@@ -45,7 +45,7 @@ Now, open VS Code (if it was already opened, close it and open it again...) and 
 
 ## Install the dependencies for this session
 
-For this session we only installed [FastAPI](https://fastapi.tiangolo.com) (and its required dependency, (Uvicorn)[https://www.uvicorn.org]).
+For this session we only installed [FastAPI](https://fastapi.tiangolo.com) (and its required dependency, [Uvicorn](https://www.uvicorn.org)).
 
 FastAPI is a fast web framework, very easy to use and with a ton of features that allow for rapid development of REST APIs. It relies on [Starlette](https://www.starlette.io) and [Pydantic](https://pydantic-docs.helpmanual.io), two modern libraries that make it very easy to build web applications with python.
 
