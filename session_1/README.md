@@ -85,7 +85,7 @@ When we call this line, our `app` variable holds a reference to an instance of t
 
 Finally, we have:
 ```
-@app.get()
+@app.get("/")
 async def say_hello():
     return "Hello, world!"
 ```
