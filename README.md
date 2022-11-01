@@ -28,6 +28,8 @@ Here's the summary of each session:
 
 [Session 1](session_1/README.md)
 
+[Session 2](session_2/README.md)
+
 
 # Major Dependencies
 
