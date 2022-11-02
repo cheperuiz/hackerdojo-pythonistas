@@ -32,7 +32,6 @@ Some of the concepts we will glance over are:
 - Functions.
 - Classes and magic *dunder* methods (double underscore methods).
 - Modules, packages and the import system.
-- A few, very useful, *advanced-ish* concepts (context managers, decorators, iterators/generators)
 
 Depending on the type of a variable, it will behave differently when used in combination with the different operators that exist in python. You can take a look at al the operators available here:
 
@@ -51,7 +50,20 @@ There are a few more types available, and you may find an interesting read at th
 - Dict (`dict`)
 - String (`str`)
 
-Please take a look at the [Session 2 Notebook](./Session_2.ipynb) to take a look at interesting things we can do with each type.
+### Modern Python: Type hints
+
+It is a fact that a trend in the industry is to provide some typing information as we write code. This helps us prevent and catch errors before we actually run our code, as well as (sometimes) make it execute faster (ie. typescript vs javascript) or provide functionality that would be very hard to implement without typing information.
+
+Since Python 3.5, you can add type hints to your code by importing the definitions in the [typing](https://docs.python.org/3/library/typing.html) module. Starting on Python 3.10, there is no need to import anything as it is becoming a fundamental part of the language.
+
+I recommend that you enable your linter to warn you about typing information and use them as much as possible. To do this, go to the settings page in VS Code (Mac: `cmd + ,` Win,Linux: `crtl + ,`), write `type checking` and select the corresponding option in the 
+
+Personally, I have a `strict` setting for my projects, but if you just want to get your feet wet and see what this type hints are all about you may start with the `basic` setting.
+
+![Alt text](./assets/type_checking.png "Enable type checking")
+
+Please take a look at the [Session 2 Notebook](./Session_2.ipynb) to take a look at interesting things we can do with each type and the corresponding hints.
+
 
 ## Scopes and lifetimes
 
@@ -132,22 +144,135 @@ my_func(a=1, 2)
 
 ### Pitfalls: Mutable types as default values (don't do it)
 
+When you run a Python script or import it as a module, all the top level statements will be evaluated. That includes any global variable initialization, function calls and function definitions. As everything else in Python, a function is an object that exists during the lifetime of a program, and as any other object, some of it's members have values assigned. This is the case of the default values for `keyword` arguments.
+
+For most default values, this is great: whenever someone invokes a function without passing a value, the default will be used. The problem arises when the type of this default value is a mutable type (list, dict, etc) and said value is modified inside the function. The next time that function is called, the default value will be different from the first time:
+
+```
+def func(key, value, d = {}):
+    d[key] = value
+    return d
+```
+
+When we call it the first time, the result is what we expect:
+
+```
+func('first', 1)
+```
+this outputs `{'first': 1}`
+
+And when we call it the second time:
+```
+func('second', 2)
+```
+
+We would expect to see `{'second': 2}`, however, what we get is:
+
+ ```
+ {
+    'first': 1, 
+    'second': 2
+}
+```
+
+This behavior is a consequence of the fudamental design of the Python language and, arguably, can be a *useful* feature (ie. memoization). However, there are much better way to implement this kind of behaviors whenever we intend to.
+
+If you need to use a mutable type for a function, my recommendation is that you use an invalid value as the default and then assign it to the variable when the function execution starts. A common idiom for this very common case is a shorthand for:
+
+```
+if d == None
+    d = {}
+```
+has an equivalent as:
+
+```
+d = d or {}
+```
+
+So now, our function looks like this:
+
+```
+def func(key, value, d = None):
+    d = d or {}
+
+    d[key] = value
+    return d
+```
+
+and after calling it 2 times, the result is what we expect:
+
+```
+func('first', 1)
+func('second', 2)
+```
+Now the result is the expected `{'second': 2}`
+
 ## Classes
 
 A class allow us to define our own types. The syntax is very simple and similar to other languages. It allows us to group together several related functions and data. Some people like OOP, others prefer using only functions. The good thing is that Python allows you to use one or the other (or both) whenever you want.
 
 For this section, take a look at the [notebook](./Session_2.ipynb).
 
-## Modules and the import system
 
-The import system is a Python component that allows us to package (and publish) fractions of our code. A module is the next level of grouping after functions and classes
+### Magic *dunder* methods
+
+A *dunder* method (special methods or Double Underscore Method) is a method defined inside a class with [special behavior](https://docs.python.org/3/reference/datamodel.html#specialnames), suche methods' name starts and ends with `__` (double underscore, thus the *dunder* moniker). 
+
+There's a special magic that can happen when a certain method is implemented: It allows us to use standard features of Python with our custom objects. There are many *dunder* methods available, but some of the ones I find very useful are:
+
+- Initialization: `__init__`
+- String representation methods:   `__str__` and `__repr__`
+- Hash: `__hash__`
+- Sorting and comparison: `__lt__`, `__lte__`, `__gt__`, `__gte__`
+
+### Hack: Get free out-of-the-box functionality with `dataclass`
+
+The `dataclass` decorator is part of the standard library (meaning: you have it already) and provides automatically generated *dunder* methods that make your life easy and save you precious developer time.
+
+One feature that I find particularly useful is the ability to compare (and sort) objects out of the box, based on the existing members.
+
+Check out the [Official Documentation for dataclasses](https://docs.python.org/3/library/dataclasses.html) and also the examples provided in the [notebook](./Session_2.ipynb).
+
+### Better Hack: Pydantic
+
+[Pydantic](https://pydantic-docs.helpmanual.io) is a library that takes these concepts to the next level. It has an implementation for dataclasses that is a drop-in replacement for the standard library but also provide a `BaseModel` type that is great for modeling and validating data. A lot of the [FastAPI](https://fastapi.tiangolo.com) functionality introduced in [Sesion 1](../session_1/README.md) is built using Pydantic to provide the magic. We will take a deeper look at pydantic in the 3rd session.
 
 
-## Bonus: Context Managers, Generators, Decorators
+## Modules, packages and the import system
 
-A brief summary of these very useful concepts.
+The import system is a Python component that allows us to package (and publish) fractions of our code. A module is the next level of grouping after functions and classes as it allows the programmer to put multiple class definitions and functionality together in a file. And what do we get if we create a directory and put several modules in there? That would be a `package` and as the name suggests, with just a few extra steps it can be packaged for publishing and distribution.
 
-## Putting it all together: Inferencing library using Intel's OpenVINO
+It is important to know that every time the interpreter runs an `import` statement, all the top level lines will run (as we saw on the `functions` section). But also, if we do the same import in multiple places in our program, it will only run once (under most circumstances). 
+
+If we want our module to be able to run as a script, we can use the following lines (that I'm sure you've seen if this is not your first day playing with Python):
+
+```
+if __name__ == "__main__":
+    # Do stuff when invoked with `python myscript.py`
+    ... 
+```
+
+When a Python module or package is imported, `__name__` is set to the module’s name. Usually, this is the name of the Python file itself without the .py extension. However, if the module is executed in the top-level code environment, its __name__ is set to the string '__main__'. This way, we can prevent some of the code from running when using the file as a module, but execute some special things for us when invoked as top-level by the interpreter.
+
+Depending on the version of Python you are using, you might need to include a `__init__.py` file as part of your package. I recommend that you always create this file. In many cases this item can be empty and is just used as a marker, but if your package is more complex, you might want to isolate the user of your library from some parts of your code and provide a more useful interface for them to use.
+
+So, in our project, we might have a combination of modules and libraries that looks like this:
+
+```
+project_folder
+    | main.py                   # Entry point
+    |-firstmodule.py            # Some functionality in a module
+    |-mypackage                 # Some extra functionality in a package
+        |-__init__.py           # Marker file
+        |-secondmodule.py       # Actual implementations
+```
+
+
+## Putting it all together: Custom inferencing library using ***Intel's OpenVINO***
+
+We will define a single class `Witi` (What is this image?) that loads a pre trained model when we create an instance so we can call a `predict` method and get a description for an image we give it.
+
+As always, take a look at the [notebook](./Session_2.ipynb) to see how this is done and also look at the code in this repo.
 
 ## Thanks to Intel
 
