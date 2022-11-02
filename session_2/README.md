@@ -15,6 +15,15 @@ If this is your first time developing with python, follow the steps below:
     - About [Black](https://black.readthedocs.io/en/stable/) formatter and why its awesome.
 - Have a virtual environment already configured as an interpreter for your project.
     - For this, you can try completing all the steps from [Session 1](../session_1/README.md).
+- Activate your virtual envirnoment and install Jupyter Notebook.
+
+```
+source ~/.virtualenvs/hd-python/bin/activate
+pip install notebook
+```
+- Open VS Code and make sure you are using the interpreter from your virtual environment.
+- Install the Jupyter VS Code extension (by Microsoft).
+
 
 
 ## Overview of the building blocks
