@@ -4,6 +4,10 @@ import numpy as np
 
 
 class Witi:
+    """
+    What Is This Image? A simple wrapper for image classification with Intel OpenVINO.
+    """
+
     def __init__(
         self,
         model: str = "./model/v3-small_224_1.0_float.xml",
