@@ -32,7 +32,7 @@ python3 -m venv ~/.virtualenvs/hd-python
 
 Activate the virtual environment (Linux & Mac):
 ```
-source ~/.virtualenv/hd-pythn/bin/activate
+source ~/.virtualenvs/hd-python/bin/activate
 ```
 or run the script (Windows only):
 ```
