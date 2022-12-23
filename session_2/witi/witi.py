@@ -13,6 +13,7 @@ class Witi:
         model: str = "./model/v3-small_224_1.0_float.xml",
         labels: str = "./model/imagenet_2012.txt",
     ):
+
         self._ie = Core()
         loaded_model = self._ie.read_model(model=model)
         self._model = self._ie.compile_model(loaded_model, device_name="CPU")
